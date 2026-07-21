@@ -5,7 +5,12 @@ terraform {
         version = "4.73.0"
     }
   }
-  backend "azurerm" {}
+  backend "azurerm" {
+    resource_group_name = "Sourav-rg"
+    storage_account_name = "storageaccount1909"
+    container_name = "container"
+    key_id = "rovin.tfstatefile"
+  }
 }
 
 provider "azurerm" {
