@@ -1,14 +1,24 @@
-trigger: none
-pool:arundevopspool
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  name: arundevopspool
+
 stages:
-  - stage: 
+  - stage: terraformStage
+    displayName: "Terraform Stage"
     jobs:
-      - job: 
+      - job: terraformJob
+        displayName: "Terraform Job"
         steps:
           - task: TerraformInstaller@1
             inputs:
               terraformVersion: 'latest'
-          - task: TerraformTask@5
+
+          - task: TerraformTaskV2@2
+            displayName: "Terraform Init"
             inputs:
               provider: 'azurerm'
               command: 'init'
@@ -18,3 +28,19 @@ stages:
               backendAzureRmStorageAccountName: 'storageaccount1909'
               backendAzureRmContainerName: 'container'
               backendAzureRmKey: 'rovin.tfstatefile'
+
+          - task: TerraformTaskV2@2
+            displayName: "Terraform Plan"
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              environmentServiceNameAzureRM: 'Pipelineconnection'
+              environmentAzureRmOverrideSubscriptionID: '6c4275d7-e765-46db-bbc8-a283185caf4a'
+
+          - task: TerraformTaskV2@2
+            displayName: "Terraform Apply"
+            inputs:
+              provider: 'azurerm'
+              command: 'apply'
+              environmentServiceNameAzureRM: 'Pipelineconnection'
+              environmentAzureRmOverrideSubscriptionID: '6c4275d7-e765-46db-bbc8-a283185caf4a'
