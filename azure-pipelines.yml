@@ -1,0 +1,20 @@
+trigger: none
+pool:arundevopspool
+stages:
+  - stage: 
+    jobs:
+      - job: 
+        steps:
+          - task: TerraformInstaller@1
+            inputs:
+              terraformVersion: 'latest'
+          - task: TerraformTask@5
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: 'Pipelineconnection'
+              backendAzureRmOverrideSubscriptionID: '6c4275d7-e765-46db-bbc8-a283185caf4a'
+              backendAzureRmResourceGroupName: 'Sourav-rg'
+              backendAzureRmStorageAccountName: 'storageaccount1909'
+              backendAzureRmContainerName: 'container'
+              backendAzureRmKey: 'rovin.tfstatefile'
